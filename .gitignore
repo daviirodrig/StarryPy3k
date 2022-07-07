@@ -56,3 +56,6 @@ nosetests.xml
 
 # Cleanup after Macs
 .DS_Store
+
+# Python virtual environment
+.venv/
