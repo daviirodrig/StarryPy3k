@@ -1,4 +1,4 @@
-from utilities import BiDict
+from ..utilities import BiDict
 
 packets = BiDict({
     'protocol_request': 0,

@@ -3,7 +3,7 @@ import logging
 import sys
 from pathlib import Path
 
-from utilities import recursive_dictionary_update, DotDict
+from util.utilities import recursive_dictionary_update, DotDict
 
 logger = logging.getLogger("starrypy.configuration_manager")
 

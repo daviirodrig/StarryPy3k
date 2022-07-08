@@ -1,7 +1,7 @@
 import asyncio
 import collections
 
-from utilities import DotDict, recursive_dictionary_update
+from util.utilities import DotDict, recursive_dictionary_update
 
 
 class BaseMeta(type):

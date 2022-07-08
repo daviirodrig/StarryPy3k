@@ -10,4 +10,4 @@ if [ ! -f config/permissions.json.default ]; then
     cp defaults/permissions.json.default config
 fi
 
-exec python3 ./server.py
+exec python3 ./src/server.py

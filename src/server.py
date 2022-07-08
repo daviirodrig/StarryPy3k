@@ -5,10 +5,10 @@ import signal
 
 from configuration_manager import ConfigurationManager
 from data_parser import ChatReceived
-from packets import packets
+from util.enums.packets import packets
 from pparser import build_packet
 from plugin_manager import PluginManager
-from utilities import path, read_packet, State, Direction, ChatReceiveMode
+from util.utilities import path, read_packet, State, Direction, ChatReceiveMode
 
 
 class StarryPyServer:

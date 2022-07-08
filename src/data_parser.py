@@ -11,7 +11,7 @@ try:
 except ImportError:
     use_c_parser = False
 
-from utilities import DotDict, WarpType, WarpWorldType, SystemLocationType
+from util.utilities import DotDict, WarpType, WarpWorldType, SystemLocationType
 
 
 
