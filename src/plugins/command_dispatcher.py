@@ -12,10 +12,10 @@ Updated for release: kharidiron
 """
 
 import asyncio
-import packets
+from util.enums.packets import packets
 
 from base_plugin import BasePlugin
-from utilities import extractor, get_syntax, send_message
+from util.utilities import extractor, get_syntax, send_message
 from data_parser import ChatSent
 from pparser import build_packet
 
@@ -52,7 +52,7 @@ class CommandDispatcher(BasePlugin):
                 cmd = data['parsed']['message'].replace("sb:", "")
                 pkt = ChatSent.build({"message": cmd, "send_mode": data[
                     'parsed']['send_mode']})
-                full = build_packet(packets.packets['chat_sent'], pkt)
+                full = build_packet(packets['chat_sent'], pkt)
                 yield from connection.client_raw_write(full)
                 return False
             to_parse = data['parsed']['message'][len(

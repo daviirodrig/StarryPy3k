@@ -10,7 +10,7 @@ Original Authors: GermaniumSystem
 
 from base_plugin import BasePlugin
 from data_parser import ConnectFailure
-from packets import packets
+from util.enums.packets import packets
 from pparser import build_packet
 
 

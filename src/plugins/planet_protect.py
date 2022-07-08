@@ -12,11 +12,11 @@ import asyncio
 
 import time
 
-import packets
+from util.enums.packets import packets
 import pparser
 from base_plugin import StorageCommandPlugin
 from data_parser import GiveItem
-from utilities import Direction, Command, send_message, \
+from util.utilities import Direction, Command, send_message, \
     EntityInteractionType, EntitySpawnType
 
 
@@ -103,7 +103,7 @@ class PlanetProtect(StorageCommandPlugin):
                                         count=1,
                                         variant_type=7,
                                         description=""))
-        item_packet = pparser.build_packet(packets.packets['give_item'],
+        item_packet = pparser.build_packet(packets['give_item'],
                                            item_base)
         yield from asyncio.sleep(.1)
         yield from connection.raw_write(item_packet)

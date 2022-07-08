@@ -12,7 +12,7 @@ Original Authors: GermaniumSystem
 from base_plugin import SimpleCommandPlugin
 from data_parser import ConnectFailure
 from pparser import build_packet
-from packets import packets
+from util.enums.packets import packets
 
 
 class BasicAuth(SimpleCommandPlugin):

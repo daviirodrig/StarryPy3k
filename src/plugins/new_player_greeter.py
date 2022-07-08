@@ -11,11 +11,11 @@ Original authors: kharidiron
 
 import asyncio
 
-import packets
+from util.enums.packets import packets
 import pparser
 from base_plugin import SimpleCommandPlugin
 from data_parser import GiveItem
-from utilities import send_message, ChatReceiveMode, DotDict
+from util.utilities import send_message, ChatReceiveMode, DotDict
 
 
 ###
@@ -94,7 +94,7 @@ class NewPlayerGreeter(SimpleCommandPlugin):
                                             count=count,
                                             variant_type=7,
                                             description=""))
-            item_packet = pparser.build_packet(packets.packets['give_item'],
+            item_packet = pparser.build_packet(packets['give_item'],
                                                item_base)
             yield from asyncio.sleep(.1)
             yield from connection.raw_write(item_packet)

@@ -12,11 +12,11 @@ import sys
 
 import datetime
 
-import packets
+from util.enums.packets import packets
 import pparser
 import data_parser
 from base_plugin import SimpleCommandPlugin
-from utilities import send_message, Command, broadcast, link_plugin_if_available, State
+from util.utilities import send_message, Command, broadcast, link_plugin_if_available, State
 
 
 ###
@@ -95,7 +95,7 @@ class GeneralCommands(SimpleCommandPlugin):
                 "general_commands.maintenance_bypass"):
             fail = data_parser.ConnectFailure.build(dict(
                 reason=self.rejection_message))
-            pkt = pparser.build_packet(packets.packets['connect_failure'],
+            pkt = pparser.build_packet(packets['connect_failure'],
                                        fail)
             yield from connection.raw_write(pkt)
             return False
@@ -199,7 +199,7 @@ class GeneralCommands(SimpleCommandPlugin):
                                                     count=count,
                                                     variant_type=7,
                                                     description=""))
-        item_packet = pparser.build_packet(packets.packets['give_item'],
+        item_packet = pparser.build_packet(packets['give_item'],
                                            item_base)
         yield from target.raw_write(item_packet)
         send_message(connection,

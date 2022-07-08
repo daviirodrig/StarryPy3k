@@ -11,7 +11,7 @@ import asyncio
 import datetime
 
 from base_plugin import StorageCommandPlugin
-from utilities import Command, send_message
+from util.utilities import Command, send_message
 
 
 class Mail:
@@ -49,7 +49,7 @@ class MailPlugin(StorageCommandPlugin):
         """
         asyncio.ensure_future(self._display_unread(connection))
         return True
-
+    @asyncio.coroutine
     def _display_unread(self, connection):
         yield from asyncio.sleep(3)
         if connection.player.uuid not in self.storage['mail']:

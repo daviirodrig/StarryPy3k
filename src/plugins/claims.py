@@ -8,12 +8,12 @@ Author: medeor413
 """
 
 import asyncio
-import packets
+from util.enums.packets import packets
 
 from base_plugin import StorageCommandPlugin
 from data_parser import PlayerWarp
 from pparser import build_packet
-from utilities import Command, send_message, link_plugin_if_available
+from util.utilities import Command, send_message, link_plugin_if_available
 
 
 class Claims(StorageCommandPlugin):
@@ -105,13 +105,13 @@ class Claims(StorageCommandPlugin):
                     access["whitelist"]:
                 wp = PlayerWarp.build({"warp_action": {"warp_type": 3,
                                                        "alias_id": 2}})
-                full = build_packet(packets.packets['player_warp'], wp)
+                full = build_packet(packets['player_warp'], wp)
                 yield from connection.client_raw_write(full)
             elif connection.player.uuid not in access["list"] and \
                     access["whitelist"]:
                 wp = PlayerWarp.build({"warp_action": {"warp_type": 3,
                                                        "alias_id": 2}})
-                full = build_packet(packets.packets['player_warp'], wp)
+                full = build_packet(packets['player_warp'], wp)
                 yield from connection.client_raw_write(full)
 
     # noinspection PyMethodMayBeStatic

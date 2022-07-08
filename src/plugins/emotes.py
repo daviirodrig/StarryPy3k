@@ -10,10 +10,10 @@ Original authors: kharidiron
 import asyncio
 
 import data_parser
-import packets
+from util.enums.packets import packets
 import pparser
 from base_plugin import SimpleCommandPlugin
-from utilities import Command, send_message, StorageMixin, broadcast, \
+from util.utilities import Command, send_message, StorageMixin, broadcast, \
     link_plugin_if_available, ChatSendMode
 
 
@@ -64,7 +64,7 @@ class Emotes(StorageMixin, SimpleCommandPlugin):
     def _send_to_server(self, message, mode, connection):
         msg_base = data_parser.ChatSent.build(dict(message="".join(message),
                                                    send_mode=mode))
-        msg_packet = pparser.build_packet(packets.packets['chat_sent'],
+        msg_packet = pparser.build_packet(packets['chat_sent'],
                                           msg_base)
         yield from connection.client_raw_write(msg_packet)
 

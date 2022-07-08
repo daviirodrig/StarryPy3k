@@ -20,9 +20,9 @@ from operator import attrgetter
 from base_plugin import SimpleCommandPlugin
 from data_parser import ConnectFailure, ServerDisconnect
 from pparser import build_packet
-from utilities import Command, DotDict, State, broadcast, send_message, \
+from util.utilities import Command, DotDict, State, broadcast, send_message, \
     WarpType, WarpWorldType, WarpAliasType, Cupboard
-from packets import packets
+from util.enums.packets import packets
 
 
 class Player:
@@ -210,7 +210,7 @@ class PlayerManager(SimpleCommandPlugin):
     name = "player_manager"
 
     def __init__(self):
-        self.default_config = {"player_db": "config/player",
+        self.default_config = {"player_db": "src/config/player",
                                "owner_uuid": "!--REPLACE IN CONFIG FILE--!",
                                "owner_ranks": ["Owner"],
                                "new_user_ranks": ["Guest"],
@@ -223,7 +223,7 @@ class PlayerManager(SimpleCommandPlugin):
         self.plugin_shelf = self.shelf["plugins"]
         self.players_online = []
         try:
-            with open("config/permissions.json", "r") as file:
+            with open("src/config/permissions.json", "r") as file:
                 self.rank_config = json.load(file)
         except IOError as e:
             self.logger.error("Fatal: Could not read permissions file!")
@@ -462,7 +462,7 @@ class PlayerManager(SimpleCommandPlugin):
         return True
 
     # Helper functions - Used by hooks and commands
-
+    @asyncio.coroutine
     def _reap(self):
         """
         Helper function to remove players that are not marked as logged in,
@@ -482,7 +482,7 @@ class PlayerManager(SimpleCommandPlugin):
                     target.logged_in = False
                     target.location = None
                     self.players_online.remove(target.uuid)
-
+    @asyncio.coroutine
     def _save_shelf(self):
         """
         Saves the player DB on a timer to prevent data loss.

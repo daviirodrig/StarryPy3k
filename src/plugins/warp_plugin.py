@@ -9,11 +9,11 @@ Updated for 1.0 by medeor413
 
 import asyncio
 
-import packets
+from util.enums.packets import packets
 from base_plugin import SimpleCommandPlugin
 from data_parser import PlayerWarp
 from pparser import build_packet
-from utilities import Command, send_message
+from util.utilities import Command, send_message
 
 
 class WarpPlugin(SimpleCommandPlugin):
@@ -39,7 +39,7 @@ class WarpPlugin(SimpleCommandPlugin):
         """
         wp = PlayerWarp.build(dict(warp_action=dict(warp_type=2,
                                                     player_id=to_player.uuid)))
-        full = build_packet(packets.packets['player_warp'], wp)
+        full = build_packet(packets['player_warp'], wp)
         yield from from_player.connection.client_raw_write(full)
 
     def warp_player_to_ship(self, from_player, to_player):
@@ -52,7 +52,7 @@ class WarpPlugin(SimpleCommandPlugin):
         wp = PlayerWarp.build(dict(warp_action=dict(warp_type=1, world_id=2,
                                                     ship_id=to_player.uuid,
                                                     flag=0)))
-        full = build_packet(packets.packets['player_warp'], wp)
+        full = build_packet(packets['player_warp'], wp)
         yield from from_player.connection.client_raw_write(full)
 
     @Command("tp",

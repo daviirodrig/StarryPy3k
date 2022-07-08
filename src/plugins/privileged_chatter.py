@@ -12,7 +12,7 @@ Original authors: medeor413
 """
 
 from base_plugin import SimpleCommandPlugin
-from utilities import Command, send_message, ChatReceiveMode, broadcast,\
+from util.utilities import Command, send_message, ChatReceiveMode, broadcast,\
     link_plugin_if_available
 
 

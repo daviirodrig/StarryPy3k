@@ -14,7 +14,7 @@ import asyncio
 import discord
 
 from base_plugin import BasePlugin
-from utilities import ChatSendMode, ChatReceiveMode, link_plugin_if_available
+from util.utilities import ChatSendMode, ChatReceiveMode, link_plugin_if_available
 
 
 # Mock Objects

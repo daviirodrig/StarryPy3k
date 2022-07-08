@@ -9,7 +9,7 @@ Updated for release: kharidiron
 """
 
 import asyncio
-import collections
+from collections import abc
 import io
 import re
 import zlib
@@ -20,7 +20,7 @@ from types import FunctionType
 from shelve import Shelf, _ClosedDict
 from pickle import Pickler, Unpickler
 
-path = Path(__file__).parent
+path = Path(__file__).parent.parent
 
 
 # Enums
@@ -137,7 +137,7 @@ def recursive_dictionary_update(d, u):
     :return: Dictionary. Merged dictionary with bias towards the second.
     """
     for k, v in u.items():
-        if isinstance(v, collections.Mapping):
+        if isinstance(v, abc.Mapping):
             r = recursive_dictionary_update(d.get(k, {}), v)
             d[k] = r
         else:
@@ -154,7 +154,7 @@ class DotDict(dict):
     def __init__(self, d, **kwargs):
         super().__init__(**kwargs)
         for k, v in d.items():
-            if isinstance(v, collections.Mapping):
+            if isinstance(v, abc.Mapping):
                 v = DotDict(v)
             self[k] = v
 
@@ -165,7 +165,7 @@ class DotDict(dict):
             raise AttributeError(str(e)) from None
 
     def __setattr__(self, key, value):
-        if isinstance(value, collections.Mapping):
+        if isinstance(value, abc.Mapping):
             value = DotDict(value)
         super().__setitem__(key, value)
 

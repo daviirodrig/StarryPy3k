@@ -7,7 +7,7 @@ Original authors: medeor413
 """
 
 from base_plugin import BasePlugin
-from utilities import Direction
+from util.utilities import Direction
 
 
 class ChatLogger(BasePlugin):

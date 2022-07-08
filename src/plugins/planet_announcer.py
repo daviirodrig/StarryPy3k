@@ -10,7 +10,7 @@ Reimplemented for StarryPy3k by medeor413.
 import asyncio
 
 from base_plugin import StorageCommandPlugin
-from utilities import send_message, Command
+from util.utilities import send_message, Command
 
 
 class PlanetAnnouncer(StorageCommandPlugin):

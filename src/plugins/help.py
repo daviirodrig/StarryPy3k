@@ -9,7 +9,7 @@ Updated for release: kharidiron
 """
 
 from base_plugin import SimpleCommandPlugin
-from utilities import get_syntax, Command, send_message
+from util.utilities import get_syntax, Command, send_message
 
 
 class HelpPlugin(SimpleCommandPlugin):

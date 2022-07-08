@@ -10,9 +10,9 @@ import asyncio
 
 import data_parser
 import pparser
-import packets
+from util.enums.packets import packets
 from base_plugin import StorageCommandPlugin
-from utilities import Command, send_message, SystemLocationType
+from util.utilities import Command, send_message, SystemLocationType
 
 
 # Roles
@@ -60,7 +60,7 @@ class Spawn(StorageCommandPlugin):
                     world_satellite=spawn_location.satellite
                 )
             ))
-            flyship_packet = pparser.build_packet(packets.packets["fly_ship"],
+            flyship_packet = pparser.build_packet(packets["fly_ship"],
                                                   destination)
             yield from connection.client_raw_write(flyship_packet)
 

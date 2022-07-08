@@ -16,9 +16,9 @@ from datetime import datetime
 
 import data_parser
 import pparser
-import packets
+from util.enums.packets import packets
 from base_plugin import StorageCommandPlugin
-from utilities import Command, ChatSendMode, ChatReceiveMode, \
+from util.utilities import Command, ChatSendMode, ChatReceiveMode, \
     send_message, link_plugin_if_available
 
 
@@ -157,7 +157,7 @@ class ChatEnhancements(StorageCommandPlugin):
     def _send_to_server(self, message, mode, connection):
         msg_base = data_parser.ChatSent.build(dict(message=" ".join(message),
                                                    send_mode=mode))
-        msg_packet = pparser.build_packet(packets.packets['chat_sent'],
+        msg_packet = pparser.build_packet(packets['chat_sent'],
                                           msg_base)
         yield from connection.client_raw_write(msg_packet)
 
