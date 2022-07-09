@@ -1,13 +1,20 @@
-FROM python:3.5-stretch
+FROM python:3.10-slim
 
-RUN pip install discord irc3
+ENV PYTHONUNBUFFERED=true
 
-RUN mkdir /app /app/defaults
-COPY . /app/
-COPY config/*.default /app/defaults/
 WORKDIR /app
-COPY config/permissions.json.default config/permissions.json
 
-VOLUME /app/config
+COPY requirements.txt .
 
-CMD [ "./docker-start.sh" ]
+RUN pip install --disable-pip-version-check --no-cache-dir --user -r requirements.txt
+
+COPY src/ src/
+
+COPY src/config/permissions.json.default src/config/permissions.json
+COPY src/config/config.json.default src/config/config.json
+
+VOLUME /app/src/config
+
+EXPOSE 21025
+
+CMD [ "python", "src/server.py"]
