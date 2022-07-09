@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  starrypy:
+    build: .
+    volumes:
+      - ./src/config:/app/src/config
+    ports:
+      - 21025:21025
