@@ -73,7 +73,7 @@
                 "Owner"
             ],
             "owner_uuid": "!--REPLACE WITH YOUR UUID--!",
-            "player_db": "config/player"
+            "player_db": "src/config/player"
         },
         "poi": {},
         "privileged_chatter": {
