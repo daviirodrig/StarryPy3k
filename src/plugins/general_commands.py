@@ -90,14 +90,14 @@ class GeneralCommands(SimpleCommandPlugin):
                     ban_status,
                     mute_line))
 
-    def on_connect_success(self, data, connection):
+    async def on_connect_success(self, data, connection):
         if self.maintenance and not connection.player.perm_check(
                 "general_commands.maintenance_bypass"):
             fail = data_parser.ConnectFailure.build(dict(
                 reason=self.rejection_message))
             pkt = pparser.build_packet(packets['connect_failure'],
                                        fail)
-            yield from connection.raw_write(pkt)
+            await connection.raw_write(pkt)
             return False
         else:
             return True
@@ -157,7 +157,7 @@ class GeneralCommands(SimpleCommandPlugin):
              doc="Gives an item to a player. "
                  "If player name is omitted, give item(s) to self.",
              syntax=("[player=self]", "(item name)", "[count=1]"))
-    def _give_item(self, data, connection):
+    async def _give_item(self, data, connection):
         """
         Give item(s) to a player.
 
@@ -201,7 +201,7 @@ class GeneralCommands(SimpleCommandPlugin):
                                                     description=""))
         item_packet = pparser.build_packet(packets['give_item'],
                                            item_base)
-        yield from target.raw_write(item_packet)
+        await target.raw_write(item_packet)
         send_message(connection,
                      "Gave {} (count: {}) to {}".format(
                          item,
@@ -292,7 +292,7 @@ class GeneralCommands(SimpleCommandPlugin):
     @Command("uptime",
              perm="general_commands.uptime",
              doc="Displays the time since the server started.")
-    def _uptime(self, data, connection):
+    async def _uptime(self, data, connection):
         """
         Displays the time since the server started.
         :param data: The packet containing the command.
@@ -300,13 +300,13 @@ class GeneralCommands(SimpleCommandPlugin):
         :return: Null.
         """
         current_time = datetime.datetime.now() - self.start_time
-        yield from send_message(connection, "Uptime: {}".format(current_time))
+        await send_message(connection, "Uptime: {}".format(current_time))
 
     @Command("shutdown",
              perm="general_commands.shutdown",
              doc="Shutdown the server after N seconds (default 5).",
              syntax="[time]")
-    def _shutdown(self, data, connection):
+    async def _shutdown(self, data, connection):
         """
         Shutdown the StarryPy server, disconnecting everyone.
 
@@ -323,7 +323,7 @@ class GeneralCommands(SimpleCommandPlugin):
 
         broadcast(self, "^red;(ADMIN) The server is shutting down in {} "
                         "seconds.^reset;".format(shutdown_time))
-        yield from asyncio.sleep(shutdown_time)
+        await asyncio.sleep(shutdown_time)
         # this is a noisy shutdown (makes a bit of errors in the logs). Not
         # sure how to make it better...
         self.logger.warning("Shutting down server now.")

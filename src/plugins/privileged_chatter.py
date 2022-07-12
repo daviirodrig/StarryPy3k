@@ -53,7 +53,7 @@ class PrivilegedChatter(SimpleCommandPlugin):
              perm="privileged_chatter.modchat",
              doc="Send a message that can only be seen by other moderators.",
              syntax="(message)")
-    def _moderatorchat(self, data, connection):
+    async def _moderatorchat(self, data, connection):
         """
         Command to send private messages between moderators.
 
@@ -72,7 +72,7 @@ class PrivilegedChatter(SimpleCommandPlugin):
             for uuid in self.plugins["player_manager"].players_online:
                 p = self.plugins["player_manager"].get_player_by_uuid(uuid)
                 if p.perm_check("privileged_chatter.modchat"):
-                    yield from send_message(p.connection,
+                    await send_message(p.connection,
                                             "{}{}^reset;".format(
                                                 self.modchat_color, message),
                                             client_id=p.client_id,
@@ -84,7 +84,7 @@ class PrivilegedChatter(SimpleCommandPlugin):
              perm="privileged_chatter.report",
              doc="Privately make a report to all online moderators.",
              syntax="(message)")
-    def _report(self, data, connection):
+    async def _report(self, data, connection):
         """
         Command to send reports to moderators.
 
@@ -101,7 +101,7 @@ class PrivilegedChatter(SimpleCommandPlugin):
             send_mode = ChatReceiveMode.BROADCAST
             channel = ""
             mods_online = False
-            yield from send_message(connection,
+            await send_message(connection,
                                     "{}{}^reset;".format(
                                         self.report_prefix, message),
                                     client_id=connection.player.client_id,
@@ -112,7 +112,7 @@ class PrivilegedChatter(SimpleCommandPlugin):
                 p = self.plugins["player_manager"].get_player_by_uuid(uuid)
                 if p.perm_check("privileged_chatter.modchat"):
                     mods_online = True
-                    yield from send_message(p.connection,
+                    await send_message(p.connection,
                                             "{}{}^reset;".format(
                                                 self.report_prefix, message),
                                             client_id=p.client_id,
@@ -120,7 +120,7 @@ class PrivilegedChatter(SimpleCommandPlugin):
                                             mode=send_mode,
                                             channel=channel)
             if self.discord:
-                yield from self.discord.bot_write("**Report by {}:** {}".format(
+                await self.discord.bot_write("**Report by {}:** {}".format(
                     connection.player.alias, message),
                     target=self.discord.staff_channel)
             # if not mods_online and self.report_mail:

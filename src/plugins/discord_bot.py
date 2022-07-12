@@ -59,11 +59,11 @@ class MockConnection:
         self.owner = owner
         self.player = MockPlayer()
 
-    @asyncio.coroutine
-    def send_message(self, *messages):
+
+    async def send_message(self, *messages):
         for message in messages:
             message = self.owner.color_strip.sub("", message)
-            yield from self.owner.bot_write(message,
+            await self.owner.bot_write(message,
                                             target=self.owner.command_target)
         return None
 
@@ -206,8 +206,8 @@ class DiscordPlugin(BasePlugin, discord.Client):
 
     # Helper functions - Used by commands
 
-    @asyncio.coroutine
-    def start_bot(self):
+
+    async def start_bot(self):
         """
         :param :
         :param :
@@ -215,8 +215,8 @@ class DiscordPlugin(BasePlugin, discord.Client):
         """
         self.logger.info("Starting Discord Bot")
         try:
-            yield from self.login(self.token, loop=self.loop)
-            yield from self.connect()
+            await self.login(self.token, loop=self.loop)
+            await self.connect()
         except Exception as e:
             self.logger.exception(e)
 
@@ -224,7 +224,7 @@ class DiscordPlugin(BasePlugin, discord.Client):
     def update_id(self, client_id):
         self.client_id = client_id
 
-    @asyncio.coroutine
+
     def on_ready(self):
         self.channel = self.get_channel(self.channel_id)
         self.staff_channel = self.get_channel(self.staff_channel_id)
@@ -235,12 +235,12 @@ class DiscordPlugin(BasePlugin, discord.Client):
             self.logger.warning("Couldn't get staff channel! Reports "
                                 "will be sent to the main channel.")
 
-    @asyncio.coroutine
-    def on_message(self, message):
-        yield from self.send_to_game(message)
 
-    @asyncio.coroutine
-    def send_to_game(self, message):
+    async def on_message(self, message):
+        await self.send_to_game(message)
+
+
+    async def send_to_game(self, message):
         """
         Broadcast a message on the server. Make sure it isn't coming from the
         bot (or else we get duplicate messages).
@@ -261,7 +261,7 @@ class DiscordPlugin(BasePlugin, discord.Client):
                     text = text.replace("<:{}:{}>".format(emote.name,
                                                           emote.id),
                                         ":{}:".format(emote.name))
-                yield from self.factory.broadcast("[^orange;DC^reset;] <{}>"
+                await self.factory.broadcast("[^orange;DC^reset;] <{}>"
                                                   " {}".format(nick, text),
                                                   mode=ChatReceiveMode.BROADCAST)
                 if self.config.get_plugin_config(self.name)["log_discord"]:
@@ -270,8 +270,8 @@ class DiscordPlugin(BasePlugin, discord.Client):
                     asyncio.ensure_future(self.irc.bot_write(
                                           "[DC] <{}> {}".format(nick, text)))
 
-    @asyncio.coroutine
-    def make_announce(self, connection, circumstance):
+
+    async def make_announce(self, connection, circumstance):
         """
         Send a message to Discord when someone joins/leaves the server.
 
@@ -279,12 +279,12 @@ class DiscordPlugin(BasePlugin, discord.Client):
         :param circumstance:
         :return: Null.
         """
-        yield from asyncio.sleep(1)
-        yield from self.bot_write("**{}** has {} the server.".format(
+        await asyncio.sleep(1)
+        await self.bot_write("**{}** has {} the server.".format(
             connection.player.alias, circumstance))
 
-    @asyncio.coroutine
-    def handle_command(self, data, user):
+
+    async def handle_command(self, data, user):
         split = data.split()
         command = split[0]
         to_parse = split[1:]
@@ -303,17 +303,17 @@ class DiscordPlugin(BasePlugin, discord.Client):
         if command in self.dispatcher.commands:
             # Only handle commands that work from Discord
             if command in self.allowed_commands:
-                yield from self.dispatcher.run_command(command,
+                await self.dispatcher.run_command(command,
                                                        self.mock_connection,
                                                        to_parse)
             else:
-                yield from self.bot_write("Command not handled by Discord.",
+                await self.bot_write("Command not handled by Discord.",
                                           target=self.command_target)
         else:
-            yield from self.bot_write("Command not found.",
+            await self.bot_write("Command not found.",
                                       target=self.command_target)
 
-    @asyncio.coroutine
+
     def bot_write(self, msg, target=None):
         if target is None:
             target = self.channel

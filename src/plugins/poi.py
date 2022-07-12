@@ -32,8 +32,8 @@ class POI(StorageCommandPlugin):
 
     # Helper functions - Used by commands
 
-    @asyncio.coroutine
-    def _move_ship(self, connection, location):
+
+    async def _move_ship(self, connection, location):
         """
         Generate packet that moves ship.
 
@@ -62,7 +62,7 @@ class POI(StorageCommandPlugin):
             ))
             flyship_packet = pparser.build_packet(packets["fly_ship"],
                                                   destination)
-            yield from connection.client_raw_write(flyship_packet)
+            await connection.client_raw_write(flyship_packet)
 
     # Commands - In-game actions that can be performed
 
@@ -71,7 +71,7 @@ class POI(StorageCommandPlugin):
              doc="Moves a player's ship to the specified Point of Interest, "
                  "or prints the POIs if no argument given.",
              syntax="[\"][POI name][\"]")
-    def _poi(self, data, connection):
+    async def _poi(self, data, connection):
         """
         Move a players ship to the specified POI, free of fuel charge,
         no matter where they are in the universe.
@@ -96,7 +96,7 @@ class POI(StorageCommandPlugin):
                          "You must be on your ship for this to work.")
             return
         try:
-            yield from self._move_ship(connection, poi)
+            await self._move_ship(connection, poi)
             send_message(connection,
                          "Now en route to {}. Please stand by...".format(poi))
         except NotImplementedError:

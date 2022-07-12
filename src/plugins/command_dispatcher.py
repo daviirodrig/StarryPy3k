@@ -30,7 +30,7 @@ class CommandDispatcher(BasePlugin):
 
     # Packet hooks - look for these packets and act on them
 
-    def on_chat_sent(self, data, connection):
+    async def on_chat_sent(self, data, connection):
         """
         Catch a chat packet as it goes by. If the first character in its
         string is the command_prefix, it is a command. Grab it and start
@@ -53,7 +53,7 @@ class CommandDispatcher(BasePlugin):
                 pkt = ChatSent.build({"message": cmd, "send_mode": data[
                     'parsed']['send_mode']})
                 full = build_packet(packets['chat_sent'], pkt)
-                yield from connection.client_raw_write(full)
+                await connection.client_raw_write(full)
                 return False
             to_parse = data['parsed']['message'][len(
                 self.plugin_config.command_prefix):].split()
@@ -134,8 +134,8 @@ class CommandDispatcher(BasePlugin):
         send_message(connection, "Unknown player {}".format(player_name))
         return None
 
-    @asyncio.coroutine
-    def run_command(self, command, connection, to_parse):
+
+    async def run_command(self, command, connection, to_parse):
         """
         Evaluate the command passed in, passing along the arguments. Raise
         various errors depending on what might have gone wrong.
@@ -149,7 +149,7 @@ class CommandDispatcher(BasePlugin):
                 General Exception error as a last-resort catch-all.
         """
         try:
-            yield from self.commands[command](extractor(to_parse),
+            await self.commands[command](extractor(to_parse),
                                               connection)
         except SyntaxWarning as e:
             self._send_syntax_error(command, e, connection)
